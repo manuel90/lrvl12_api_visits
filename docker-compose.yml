@@ -1,0 +1,58 @@
+name: story_visits
+
+services: 
+  laravel:
+    container_name: story_visits_backend
+    build:
+      context: .
+      args:
+        - PHP_VERSION=8.2
+    volumes:
+      - './:/var/www/html'
+    ports:
+      - "8002:80"
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+    networks:
+      - story_visits_net
+  mysqldb:
+    image: mysql:5.7
+    container_name: story_visits_dbmysql
+    environment:
+      MYSQL_ROOT_PASSWORD: story
+      MYSQL_DATABASE: story_visits_laravel
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: dev
+    ports:
+      - "3030:3306"
+    volumes:
+      - dbdata_mysql:/var/lib/mysql
+      - './mysql-init:/docker-entrypoint-initdb.d'
+    networks:
+      - story_visits_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  adminer:
+    image: adminer:latest
+    container_name: story_visits_adminer_mysql
+    environment:
+      - ADMINER_DEFAULT_SERVER=story_visits_dbmysql
+    ports:
+      - "8003:8080"
+    networks:
+      - story_visits_net
+    depends_on:
+      mysqldb:
+        condition: service_healthy
+  
+volumes:
+  dbdata_mysql:
+
+networks:
+  story_visits_net:
+    name: story_visits_net_name
+    driver: bridge

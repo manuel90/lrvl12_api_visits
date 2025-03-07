@@ -51,3 +51,5 @@ Use this command to run the migrations:
 Use this command to run the tests:
 
 `php artisan test`
+
+## By Manuel Antonio Lopez Lara
