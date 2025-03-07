@@ -52,4 +52,13 @@ Use this command to run the tests:
 
 `php artisan test`
 
+### Endpoint availables
+
+- GET `/visits?relations=visitors` (This endpoint has an example of many to many relationship.)
+- POST `/visits`
+- PUT `/visits/{id}`
+- GET `/visits/{id}`
+- DELETE `/visits/{id}`
+- POST `/visits/{id}/visitors`
+
 ## By Manuel Antonio Lopez Lara
